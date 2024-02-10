@@ -35,8 +35,8 @@ function App() {
   // Assure we have user ID
   const [userID, setUserID] = useState("")
 
-  const checkAndGetUserID = async () => {
-    if (!userID || userID == ''){
+  const getUserID = async () => {
+    if (!userID || userID === ''){
       const {data} = await axios.get("https://api.spotify.com/v1/me", {
           headers: {
               Authorization: `Bearer ${token}`
@@ -44,7 +44,9 @@ function App() {
       })
 
       setUserID(data.id)
+      return data.id
     }
+    return userID
   }
 
   // Logout
@@ -58,9 +60,9 @@ function App() {
   const [playlists, setPlaylists] = useState([])
   const getUserPlaylists = async (e) => {
     e.preventDefault()
-    checkAndGetUserID()
+    let id = await getUserID()
 
-    const {data} = await axios.get('https://api.spotify.com/v1/users/'+userID+'/playlists', {
+    const {data} = await axios.get('https://api.spotify.com/v1/users/'+ id +'/playlists', {
         headers: {
             Authorization: `Bearer ${token}`
         },
