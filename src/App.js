@@ -88,17 +88,7 @@ function App() {
         {playlists.length ===0 ?
           <button onClick={getUserPlaylists}>GET PLAYLISTS</button>
           : 
-          <Box fill align="center" justify="start" pad="large" gap="medium">
-            <Select
-                id="playlistSelect"
-                name="playlistSelect"
-                placeholder="Select"
-                options={playlists}
-                valueKey={{ key: 'id', reduce: true}}
-                labelKey="name"
-                onChange={({ value: nextValue }) => setSelected(nextValue)}
-            />
-        </Box>
+          <Combiner playlists={playlists}/>
         }
       </header>
     </Grommet>

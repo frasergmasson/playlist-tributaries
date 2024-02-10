@@ -2,7 +2,7 @@ import { Box } from "grommet"
 import { useState } from "react";
 import { Select } from "grommet";
 
-function Combiner(playlists){
+function Combiner({playlists}){
 
     const [selected, setSelected] = useState('');
 
