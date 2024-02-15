@@ -88,7 +88,11 @@ function App() {
         {playlists.length ===0 ?
           <button onClick={getUserPlaylists}>GET PLAYLISTS</button>
           : 
-          <Combiner playlists={playlists}/>
+          <Combiner 
+            playlists={playlists}
+            getUserID = {getUserID}
+            token = {token}
+          />
         }
       </header>
     </Grommet>
