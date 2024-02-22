@@ -1,4 +1,4 @@
-import { Box, Button, Tag } from "grommet"
+import { Box, Button, Tag, Notification} from "grommet"
 import { useState } from "react";
 import { Select } from "grommet";
 import axios from "axios";
@@ -8,6 +8,11 @@ function Combiner({playlists,token}){
     const [selected1, setSelected1] = useState('');
     const [selected2, setSelected2] = useState('');
     const [selectedOutput, setselectedOutput] = useState('');
+
+    const [combineStatus,setCombineStatus] = useState('');
+    //State enums
+    const SUCCESS = "SUCCESS"
+    const FAILURE = "FAILURE"
 
     const getPlaylistTrackURIs = async(playlistID,token) => {
         let tracks = []
@@ -70,40 +75,63 @@ function Combiner({playlists,token}){
         let allURIs = (await trackURIs1).concat(await trackURIs2)
 
         addTracksToPlaylist(allURIs,selectedOutput,token)
+        setCombineStatus(SUCCESS)
+      }
+
+      const displayMessage = (status) => {
+        if (status === SUCCESS){
+            return <Notification
+                message="Tracks added to playlist successfully!"
+                status="normal"
+            />
+        }
+        if (status === FAILURE){
+            return <Notification
+                message="Failed to add tracks to playlist."
+                status="critical"
+            />
+        }
+        return
       }
 
     return (
-        <Box fill align="center" justify="start" pad="large" gap="medium" direction="row">
-            <Select
-                id="playlistSelect1"
-                name="playlistSelect1"
-                placeholder="Select"
-                options={playlists}
-                valueKey={{ key: 'id', reduce: true}}
-                labelKey="name"
-                onChange={({ value: nextValue }) => setSelected1(nextValue)}
-            />
-            <Tag value="+"/>
-            <Select
-                id="playlistSelect2"
-                name="playlistSelect2"
-                placeholder="Select"
-                options={playlists}
-                valueKey={{ key: 'id', reduce: true}}
-                labelKey="name"
-                onChange={({ value: nextValue }) => setSelected2(nextValue)}
-            />
-            <Tag value="=>"/>
-            <Select
-                id="outputPlaylist"
-                name="outputPlaylist"
-                placeholder="Select"
-                options={playlists}
-                valueKey={{ key: 'id', reduce: true}}
-                labelKey="name"
-                onChange={({ value: nextValue }) => setselectedOutput(nextValue)}
-            />
-            <Button onClick={combinePlaylists} label="Combine" />
+        <Box fill align="center" justify="start" pad="large" gap="medium" direction="column">
+            <Box fill align="center" justify="start" pad="large" gap="medium" direction="row">
+                <Select
+                    id="playlistSelect1"
+                    name="playlistSelect1"
+                    placeholder="Select"
+                    options={playlists}
+                    valueKey={{ key: 'id', reduce: true}}
+                    labelKey="name"
+                    onChange={({ value: nextValue }) => setSelected1(nextValue)}
+                />
+                <Tag value="+"/>
+                <Select
+                    id="playlistSelect2"
+                    name="playlistSelect2"
+                    placeholder="Select"
+                    options={playlists}
+                    valueKey={{ key: 'id', reduce: true}}
+                    labelKey="name"
+                    onChange={({ value: nextValue }) => setSelected2(nextValue)}
+                />
+                <Tag value="=>"/>
+                <Select
+                    id="outputPlaylist"
+                    name="outputPlaylist"
+                    placeholder="Select"
+                    options={playlists}
+                    valueKey={{ key: 'id', reduce: true}}
+                    labelKey="name"
+                    onChange={({ value: nextValue }) => setselectedOutput(nextValue)}
+                />
+                <Button onClick={combinePlaylists} label="Combine" />
+            </Box>
+
+            <Box fill align="center" justify="start" pad="large" gap="medium" direction="row">
+                {displayMessage(combineStatus)}
+            </Box>
         </Box>
     )
 }
