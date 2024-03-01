@@ -3,6 +3,11 @@ import { useState } from "react";
 import { Select } from "grommet";
 import axios from "axios";
 
+//Works out what tracks need to be added to the output playlist, avoiding duplicates in the output
+function determineTracksToAdd(inputPlaylists,outputPlaylist){
+    return []
+}
+
 function Combiner({playlists,token}){
 
     const [selected1, setSelected1] = useState('');
@@ -136,4 +141,5 @@ function Combiner({playlists,token}){
     )
 }
 
+export {determineTracksToAdd}
 export default Combiner
