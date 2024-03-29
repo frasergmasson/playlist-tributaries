@@ -12,16 +12,11 @@ function determineTracksToAdd(inputPlaylists,outputPlaylist){
     return allItems.filter(item => !outputPlaylist.includes(item))
 }
 
-function union(lists){
-   
-}
-
 function Combiner({playlists,token}){
 
     const [selected1, setSelected1] = useState('');
     const [selected2, setSelected2] = useState('');
-    const [selectedOutput, setselectedOutput] = useStat
-    e('');
+    const [selectedOutput, setselectedOutput] = useState('');
 
     const [combineStatus,setCombineStatus] = useState('');
     //State enums
@@ -85,8 +80,9 @@ function Combiner({playlists,token}){
 
         let trackURIs1 = getPlaylistTrackURIs(selected1,token);
         let trackURIs2 = getPlaylistTrackURIs(selected2,token);
+        let outputURIs = getPlaylistTrackURIs(selectedOutput,token);
 
-        let allURIs = (await trackURIs1).concat(await trackURIs2)
+        let allURIs = determineTracksToAdd([await trackURIs1,await trackURIs2],await outputURIs) 
 
         addTracksToPlaylist(allURIs,selectedOutput,token)
         setCombineStatus(SUCCESS)
