@@ -3,6 +3,15 @@ import { useState } from "react";
 import { Select } from "grommet";
 import axios from "axios";
 
+//Works out what tracks need to be added to the output playlist, avoiding duplicates in the output
+function determineTracksToAdd(inputPlaylists,outputPlaylist){
+    //Combine input playlists and remove duplicates using Set
+    let allItems = inputPlaylists.reduce((l1,l2) => l1.concat(l2),[])
+    allItems = [...new Set(allItems)];
+    //Remove items that already exist in the output playlist
+    return allItems.filter(item => !outputPlaylist.includes(item))
+}
+
 function Combiner({playlists,token}){
 
     const [selected1, setSelected1] = useState('');
@@ -71,8 +80,9 @@ function Combiner({playlists,token}){
 
         let trackURIs1 = getPlaylistTrackURIs(selected1,token);
         let trackURIs2 = getPlaylistTrackURIs(selected2,token);
+        let outputURIs = getPlaylistTrackURIs(selectedOutput,token);
 
-        let allURIs = (await trackURIs1).concat(await trackURIs2)
+        let allURIs = determineTracksToAdd([await trackURIs1,await trackURIs2],await outputURIs) 
 
         addTracksToPlaylist(allURIs,selectedOutput,token)
         setCombineStatus(SUCCESS)
@@ -136,4 +146,5 @@ function Combiner({playlists,token}){
     )
 }
 
+export {determineTracksToAdd}
 export default Combiner

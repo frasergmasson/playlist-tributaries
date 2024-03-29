@@ -1,10 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
 
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import { Grommet, Box, Select } from 'grommet';
-import Combiner from './components/Combiner';
+import Combiner from './components/Combiner.js';
 
 //Variables for authentication
 const CLIENT_ID = "2cca6ddc1cf34fc88d37478bf290a55d"
