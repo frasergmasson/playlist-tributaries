@@ -5,14 +5,23 @@ import axios from "axios";
 
 //Works out what tracks need to be added to the output playlist, avoiding duplicates in the output
 function determineTracksToAdd(inputPlaylists,outputPlaylist){
-    return []
+    //Combine input playlists and remove duplicates using Set
+    let allItems = inputPlaylists.reduce((l1,l2) => l1.concat(l2),[])
+    allItems = [...new Set(allItems)];
+    //Remove items that already exist in the output playlist
+    return allItems.filter(item => !outputPlaylist.includes(item))
+}
+
+function union(lists){
+   
 }
 
 function Combiner({playlists,token}){
 
     const [selected1, setSelected1] = useState('');
     const [selected2, setSelected2] = useState('');
-    const [selectedOutput, setselectedOutput] = useState('');
+    const [selectedOutput, setselectedOutput] = useStat
+    e('');
 
     const [combineStatus,setCombineStatus] = useState('');
     //State enums
